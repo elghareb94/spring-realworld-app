@@ -54,6 +54,8 @@ public class TagDaoTest {
     public void testFindAll() {
         List<Tag> t = tagDao.findAll();
         Assert.assertEquals(t.size(), tags.size());
+        Assert.assertTrue(t.containsAll(tags));
+        Assert.assertTrue(tags.containsAll(t));
         Assert.assertTrue(t != tags);
     }
 

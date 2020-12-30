@@ -1,13 +1,16 @@
 package io.spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,11 +40,15 @@ public class Article {
     @Column(name = "body")
     private String body;
 
+    @CreationTimestamp
     @Column(name = "created_at")
-    private Instant createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss Z")
+    private ZonedDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss Z")
+    private ZonedDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -49,11 +56,13 @@ public class Article {
     private User author;
 
     @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Comment> comments;
+    @Builder.Default
+    private Set<Comment> comments = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Builder.Default
     @JoinColumn(name = "article_id")
-    private Set<Tag> tags;
+    private Set<Tag> tags = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "users_articles_favorites",

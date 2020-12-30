@@ -1,10 +1,13 @@
 package io.spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.ZonedDateTime;
 
 
 @Builder
@@ -28,11 +31,15 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User author;
 
+    @CreationTimestamp
     @Column(name = "created_at")
-    private Instant createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss Z")
+    private ZonedDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss Z")
+    private ZonedDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "article_id")

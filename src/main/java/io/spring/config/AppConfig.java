@@ -46,8 +46,7 @@ public class AppConfig {
         return props;
     }
 
-    //for testing
-    //todo ask someone
+    //for EnableTransactionManagement
     @Bean
     public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
         HibernateTransactionManager txManager = new HibernateTransactionManager();

@@ -18,4 +18,5 @@ public interface ArticleDao {
 
     List<Article> findAll();
 
+    List<Article> findByAuthors(List<Long> ids);
 }

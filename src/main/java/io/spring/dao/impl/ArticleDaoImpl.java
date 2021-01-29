@@ -58,4 +58,13 @@ public class ArticleDaoImpl implements ArticleDao {
         return articles;
     }
 
+    @Override
+    public List<Article> findByAuthors(List<Long> ids) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        Query<Article> query = currentSession.createQuery("from Article a where a.author.id in :ids");
+        query.setParameter("ids", ids);
+        List<Article> articles = query.getResultList();
+        return articles;
+    }
+
 }

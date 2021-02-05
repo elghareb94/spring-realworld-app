@@ -27,7 +27,7 @@ public class Comment {
     @Column(name = "body")
     private String body;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
 
@@ -41,7 +41,7 @@ public class Comment {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss Z")
     private ZonedDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "article_id")
     @EqualsAndHashCode.Exclude
     @JsonIgnore

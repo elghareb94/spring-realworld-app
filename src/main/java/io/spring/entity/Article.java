@@ -52,14 +52,13 @@ public class Article {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User author;
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @Builder.Default
     private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER)
     @Builder.Default
     @JoinColumn(name = "article_id")
     private Set<Tag> tags = new HashSet<>();
@@ -71,14 +70,4 @@ public class Article {
     @Builder.Default
     @JsonIgnore
     private Set<User> favoriteUsers = new HashSet<>();
-
-    private void setSlug(String title) {
-        this.slug = title.toLowerCase().replaceAll("[\\&|[\\uFE30-\\uFFA0]|\\’|\\”|\\s\\?\\,\\.]+", "-");
-    }
-
-    private void setTitle(String title) {
-        this.title = title;
-        this.setSlug(title);
-    }
-
 }

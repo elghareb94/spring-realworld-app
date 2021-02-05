@@ -38,7 +38,7 @@ public class User {
     private String imageUrl;
 
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @Builder.Default
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -46,22 +46,15 @@ public class User {
     private Set<Article> articles = new HashSet<>();
 
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @Builder.Default
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore
-    private Set<Article> comments = new HashSet<>();
+    private Set<Comment> comments = new HashSet<>();
 
 
-    @ManyToMany(mappedBy = "favoriteUsers", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @Builder.Default
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonIgnore
-    private Set<Article> favoriteArticles = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "users_follows",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "following_id")})
@@ -71,9 +64,16 @@ public class User {
     private Set<User> followings = new HashSet<>();
 
 
-    @ManyToMany(mappedBy = "followings", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "followings", fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore
     private Set<User> followers = new HashSet<>();
+
+    @ManyToMany(mappedBy = "favoriteUsers", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @Builder.Default
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
+    private Set<Article> favoriteArticles = new HashSet<>();
 }

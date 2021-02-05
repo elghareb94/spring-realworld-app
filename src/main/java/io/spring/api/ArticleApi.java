@@ -72,9 +72,9 @@ public class ArticleApi {
 
     //Authentication required
     @DeleteMapping("/{articleId}")
-    public ResponseEntity delete(@RequestBody Article article) {
+    public ResponseEntity delete(@PathVariable Long articleId) {
         User user = User.builder().id(1L).build();
-        articleService.delete(article, user.getId());
+        articleService.delete(articleId, user.getId());
         return ResponseEntity.ok(HttpHeaders.ACCEPT);
     }
 

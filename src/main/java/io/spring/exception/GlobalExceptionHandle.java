@@ -1,14 +1,17 @@
 package io.spring.exception;
 
+import io.spring.exception.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.Instant;
 import java.util.*;
 
 @ControllerAdvice
@@ -30,13 +33,13 @@ public class GlobalExceptionHandle extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-//    @ExceptionHandler()
-//    protected ResponseEntity<Object> handleMethodArgumentNotValid(ResourceNotFoundException ex) {
-//        Map<String, Object> body = new LinkedHashMap<>();
-//        body.put("status", HttpStatus.NOT_FOUND.value());
-//        body.put("message", ex.getMessage());
-//        body.put("time_stamp", Instant.now());
-//        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-//    }
+    @ExceptionHandler()
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(ResourceNotFoundException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        body.put("message", ex.getMessage());
+        body.put("time_stamp", Instant.now());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
 }
 

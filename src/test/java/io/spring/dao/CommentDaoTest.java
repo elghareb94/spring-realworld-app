@@ -55,17 +55,16 @@ public class CommentDaoTest {
     }
 
     @Test
-    public void findById() {
+    public void testFindById() {
         Optional<Comment> optionalComment = commentDao.findById(comment.getId());
         Assert.assertEquals(comment, optionalComment.get());
         Assert.assertTrue(comment != optionalComment.get());
     }
 
     @Test
-    public void delete() {
+    public void testDelete() {
         commentDao.delete(comment);
         Optional<Comment> optionalComment = commentDao.findById(comment.getId());
-        System.out.println(optionalComment);
         Assert.assertFalse(optionalComment.isPresent());
     }
 

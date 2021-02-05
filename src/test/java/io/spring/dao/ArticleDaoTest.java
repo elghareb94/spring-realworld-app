@@ -3,6 +3,7 @@ package io.spring.dao;
 import io.spring.config.AppConfig;
 import io.spring.config.DataSourceConfig;
 import io.spring.entity.Article;
+import io.spring.entity.Comment;
 import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,8 +15,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {DataSourceConfig.class, AppConfig.class})
@@ -33,7 +36,10 @@ public class ArticleDaoTest {
 
     @Before
     public void setUp() {
-        article = Article.builder().slug("slug").description("Desc").body("body").build();
+        Set<Comment> comments = new HashSet<>();
+        comments.add(Comment.builder().body("aaaaaa").build());
+
+        article = Article.builder().slug("slug").description("Desc").comments(comments).body("body").build();
         articleDao.save(article);
         sessionFactory.getCurrentSession().detach(article);
     }

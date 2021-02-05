@@ -61,7 +61,7 @@ public class UserDaoTest {
         sessionFactory.getCurrentSession().flush();
         sessionFactory.getCurrentSession().detach(user);
 
-        Optional<User> optionalUser = userDao.findByUsername("newUserName");
+        Optional<User> optionalUser = userDao.findById(user.getId());
 
         Assert.assertEquals(user, optionalUser.get());
         Assert.assertTrue(user != optionalUser.get());
@@ -106,7 +106,7 @@ public class UserDaoTest {
     @Test
     public void testDelete() {
         userDao.delete(user);
-        Optional<User> optionalUser = userDao.findById(1L);
+        Optional<User> optionalUser = userDao.findById(user.getId());
         Assert.assertFalse(optionalUser.isPresent());
     }
 

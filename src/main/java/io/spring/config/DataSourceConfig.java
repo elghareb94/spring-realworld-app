@@ -53,7 +53,9 @@ public class DataSourceConfig {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         EmbeddedDatabase db = builder
                 .setType(EmbeddedDatabaseType.H2)
+                .setName("realworld")
                 .build();
+
         return db;
     }
 }

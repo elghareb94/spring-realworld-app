@@ -11,6 +11,9 @@ import javax.validation.constraints.NotBlank;
 @JsonRootName("article")
 @NoArgsConstructor
 public class ArticleDTO {
+
+    private Long Id;
+
     @NotBlank(message = "can't be empty")
     private String title;
 
@@ -19,7 +22,6 @@ public class ArticleDTO {
 
     @NotBlank(message = "can't be empty")
     private String body;
-
 
     private String[] tagList;
 }

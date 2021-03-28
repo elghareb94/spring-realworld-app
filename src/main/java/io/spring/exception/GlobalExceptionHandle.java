@@ -1,5 +1,6 @@
 package io.spring.exception;
 
+import io.spring.exception.exceptions.AuthenticationException;
 import io.spring.exception.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,13 +34,18 @@ public class GlobalExceptionHandle extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @ExceptionHandler()
+    @ExceptionHandler({ResourceNotFoundException.class})
     protected ResponseEntity<Object> handleMethodArgumentNotValid(ResourceNotFoundException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("status", HttpStatus.NOT_FOUND.value());
         body.put("message", ex.getMessage());
         body.put("time_stamp", Instant.now());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({AuthenticationException.class})
+    public ResponseEntity<String> handleAuthenticationException(AuthenticationException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
 }
 

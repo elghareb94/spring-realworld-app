@@ -38,7 +38,7 @@ public class AppConfig {
 //    private Environment env;
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory(@Qualifier("jdbc") DataSource dataSource) {
+    public LocalSessionFactoryBean sessionFactory(@Qualifier("h2") DataSource dataSource) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setPackagesToScan(packagesToScan());

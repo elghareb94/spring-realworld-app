@@ -7,9 +7,13 @@ import io.spring.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.HashMap;
 
 @RestController
@@ -20,16 +24,15 @@ public class ArticleApi {
     private ArticleService articleService;
 
     @GetMapping("")
-    public ResponseEntity getAll() {
+    public ResponseEntity<?> getAll(Authentication authentication) {
         return this.formatResponse("articles", articleService.getAll());
     }
 
     //Authentication required
     @PostMapping("")
-    public ResponseEntity create(@Valid @RequestBody ArticleDTO newArticleDTO) {
+    public ResponseEntity<?> create(@Valid @RequestBody ArticleDTO newArticleDTO) {
 
         User user = User.builder().id(1L).build();
-
         Article newArticle = Article.builder()
                 .author(user)
                 .body(newArticleDTO.getBody())
@@ -43,7 +46,7 @@ public class ArticleApi {
 
     //Authentication required
     @GetMapping("/feed/{id}")
-    public ResponseEntity getFeed(@PathVariable Long id) {
+    public ResponseEntity<?> getFeed(@PathVariable Long id) {
         User user = User.builder().id(id).build();
         return this.formatResponse("articles", articleService.getFeed(user.getId()));
     }
@@ -57,7 +60,7 @@ public class ArticleApi {
 
     //Authentication required
     @PutMapping("/{articleId}")
-    public ResponseEntity update(@Valid @RequestBody ArticleDTO newArticleDTO, @PathVariable Long articleId) {
+    public ResponseEntity<?> update(@Valid @RequestBody ArticleDTO newArticleDTO, @PathVariable Long articleId) {
         User user = User.builder().id(1L).build();
 
         Article newArticle = Article.builder()
@@ -72,13 +75,13 @@ public class ArticleApi {
 
     //Authentication required
     @DeleteMapping("/{articleId}")
-    public ResponseEntity delete(@PathVariable Long articleId) {
+    public ResponseEntity<?> delete(@PathVariable Long articleId) {
         User user = User.builder().id(1L).build();
         articleService.delete(articleId, user.getId());
         return ResponseEntity.ok(HttpHeaders.ACCEPT);
     }
 
-    ResponseEntity formatResponse(String key, Object value) {
+    ResponseEntity<?> formatResponse(String key, Object value) {
         return ResponseEntity.ok(new HashMap<String, Object>() {
             {
                 put(key, value);

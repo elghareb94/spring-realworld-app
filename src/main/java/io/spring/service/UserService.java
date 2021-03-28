@@ -1,11 +1,12 @@
 package io.spring.service;
 
 import io.spring.entity.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * @author Elghareb
  */
-public interface UserService {
+public interface UserService extends UserDetailsService{
 
     User findById(Long userId);
 

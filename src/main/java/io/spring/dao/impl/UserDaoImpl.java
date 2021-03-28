@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 @Transactional
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl implements UserDao{
 
     @Autowired
     private SessionFactory sessionFactory;

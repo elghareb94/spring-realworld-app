@@ -16,7 +16,6 @@ public class TagApi {
     @Autowired
     private TagService tagService;
 
-
     @GetMapping
     public List<Tag> getAll() {
         return tagService.findAll();

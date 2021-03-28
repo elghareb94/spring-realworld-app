@@ -14,9 +14,6 @@ import org.hibernate.cfg.Configuration;
 public class Main {
     public static void main(String[] args) {
 
-        double a = 25.1234;
-
-        System.out.printf("'%.2f'%n",a);
 
 //        SessionFactory factory = new Configuration()
 //                .configure("hibernate.cfg.xml")

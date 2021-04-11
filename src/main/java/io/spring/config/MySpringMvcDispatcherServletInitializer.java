@@ -11,7 +11,7 @@ public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationC
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return null;
+        return new Class[]{};
     }
 
     @Override
@@ -29,7 +29,6 @@ public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationC
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
         servletContext.setInitParameter("spring.profiles.active", "Web");
-
         //add h2 in url
         servletContext.addServlet("H2Console", WebServlet.class).addMapping("/console/*");
     }

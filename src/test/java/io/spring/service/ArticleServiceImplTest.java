@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.mockito.Mockito.verify;
 
@@ -19,11 +20,12 @@ class ArticleServiceImplTest {
     @Mock
     private UserDao userDao;
 
+    @Autowired
     private ArticleService articleService;
 
     @BeforeEach
     void setUp() {
-        articleService = new ArticleServiceImpl(articleDao, userDao);
+//        articleService = new ArticleServiceImpl(articleDao, userDao);
     }
 
     @Test

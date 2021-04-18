@@ -2,6 +2,7 @@ package io.spring.dao;
 
 import io.spring.config.TestAppConfig;
 import io.spring.entity.Article;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+//assertj
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {TestAppConfig.class})
@@ -35,7 +36,9 @@ class ArticleDaoTest {
         articleDao.save(article);
 
         Optional<Article> optionalArticle = articleDao.findById(article.getId());
-        assertEquals(article, optionalArticle.get());
+        Assertions.assertThat(article).isEqualTo(optionalArticle.get());
+
+
     }
 
 }

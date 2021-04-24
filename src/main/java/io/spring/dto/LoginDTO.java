@@ -11,9 +11,12 @@ import javax.validation.constraints.NotBlank;
 @JsonRootName("user")
 @NoArgsConstructor
 public class LoginDTO {
+
     @NotBlank(message = "can't be empty")
     @Email(message = "should be an email")
     private String email;
+
     @NotBlank(message = "can't be empty")
     private String password;
+
 }

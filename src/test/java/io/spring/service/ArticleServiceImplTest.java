@@ -25,7 +25,7 @@ class ArticleServiceImplTest {
 
     @BeforeEach
     void setUp() {
-//        articleService = new ArticleServiceImpl(articleDao, userDao);
+        articleService = new ArticleServiceImpl(articleDao, userDao);
     }
 
     @Test

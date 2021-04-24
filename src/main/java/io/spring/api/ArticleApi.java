@@ -7,13 +7,12 @@ import io.spring.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.HashMap;
 
 @RestController
@@ -24,15 +23,15 @@ public class ArticleApi {
     private ArticleService articleService;
 
     @GetMapping("")
-    public ResponseEntity<?> getAll(Authentication authentication) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAll(@AuthenticationPrincipal User user) {
+        System.out.println(user);
         return this.formatResponse("articles", articleService.getAll());
     }
 
     //Authentication required
     @PostMapping("")
-    public ResponseEntity<?> create(@Valid @RequestBody ArticleDTO newArticleDTO) {
-
-        User user = User.builder().id(1L).build();
+    public ResponseEntity<?> create(@Valid @RequestBody ArticleDTO newArticleDTO, @AuthenticationPrincipal User user) {
         Article newArticle = Article.builder()
                 .author(user)
                 .body(newArticleDTO.getBody())
@@ -46,23 +45,23 @@ public class ArticleApi {
 
     //Authentication required
     @GetMapping("/feed/{id}")
-    public ResponseEntity<?> getFeed(@PathVariable Long id) {
-        User user = User.builder().id(id).build();
+    public ResponseEntity<?> getFeed(@PathVariable Long id, @AuthenticationPrincipal User user) {
+
         return this.formatResponse("articles", articleService.getFeed(user.getId()));
     }
 
 
     @GetMapping("/{articleId}")
-    public Article get(@PathVariable Long articleId) {
+    public Article get(@PathVariable Long articleId, @AuthenticationPrincipal UserDetails user) {
+
+        System.out.println(user);
         return articleService.findById(articleId);
     }
 
 
     //Authentication required
     @PutMapping("/{articleId}")
-    public ResponseEntity<?> update(@Valid @RequestBody ArticleDTO newArticleDTO, @PathVariable Long articleId) {
-        User user = User.builder().id(1L).build();
-
+    public ResponseEntity<?> update(@Valid @RequestBody ArticleDTO newArticleDTO, @PathVariable Long articleId, @AuthenticationPrincipal User user) {
         Article newArticle = Article.builder()
                 .body(newArticleDTO.getBody())
                 .title(newArticleDTO.getTitle())
@@ -75,9 +74,10 @@ public class ArticleApi {
 
     //Authentication required
     @DeleteMapping("/{articleId}")
-    public ResponseEntity<?> delete(@PathVariable Long articleId) {
-        User user = User.builder().id(1L).build();
+    public ResponseEntity<?> delete(@PathVariable Long articleId, @AuthenticationPrincipal User user) {
+
         articleService.delete(articleId, user.getId());
+
         return ResponseEntity.ok(HttpHeaders.ACCEPT);
     }
 

@@ -16,8 +16,10 @@ public class UserDTO {
     @NotBlank(message = "can't be empty")
     @Email(message = "should be an email")
     private String email;
+
     @NotBlank(message = "can't be empty")
     private String username;
+
     @NotBlank(message = "can't be empty")
     private String password;
 }

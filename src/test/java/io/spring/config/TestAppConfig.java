@@ -26,12 +26,10 @@ public class TestAppConfig {
 
     @Bean
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
-
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setPackagesToScan(environment.getProperty("hibernate.packagesToScan"));
         sessionFactory.setHibernateProperties(additionalProperties());
-
         return sessionFactory;
     }
 

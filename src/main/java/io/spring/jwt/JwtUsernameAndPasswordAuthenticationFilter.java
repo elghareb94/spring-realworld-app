@@ -3,9 +3,7 @@ package io.spring.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import io.spring.dto.UserCredential;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -34,7 +33,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            UserCredentials userCredentials = new ObjectMapper().readValue(request.getInputStream(), UserCredentials.class);
+            UserCredential userCredentials = new ObjectMapper().readValue(request.getInputStream(), UserCredential.class);
             Authentication authentication = new UsernamePasswordAuthenticationToken(userCredentials.getUsername(), userCredentials.getPassword());
             return authenticationManager.authenticate(authentication);
         } catch (IOException e) {
@@ -54,15 +53,14 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .signWith(Keys.hmacShaKeyFor(key.getBytes()))
                 .compact();
 
-        response.addHeader("Authorization", "Bearer " + token);
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.print("{\"token\":\"Bearer " + token + "\"}");
+        out.flush();
+
+//        response.addHeader("Authorization", "Bearer " + token);
     }
 }
 
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-class UserCredentials {
-    private String username;
-    private String password;
-}

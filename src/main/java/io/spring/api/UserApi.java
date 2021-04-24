@@ -5,8 +5,7 @@ import io.spring.dto.UserDTO;
 import io.spring.entity.User;
 import io.spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,12 +17,14 @@ public class UserApi {
     @Autowired
     private UserService userService;
 
-
-
+    @GetMapping("/me")
+    public User getUserProfile(@AuthenticationPrincipal User user) {
+        return user;
+    }
 
     @GetMapping(path = "/{userId}")
-    public User get(@PathVariable Long userId) {
-        return userService.findById(userId);
+    public User get(@PathVariable String userId) {
+        return userService.findByUserName(userId);
     }
 
     // /auth/register
@@ -46,6 +47,7 @@ public class UserApi {
 
     @PutMapping
     public User update(@Valid @RequestBody UserDTO userDTO) {
+
         User user = User.builder()
                 .id(userDTO.getId())
                 .username(userDTO.getUsername())

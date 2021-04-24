@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -27,12 +26,15 @@ public class DataSourceConfig {
     @Bean
     @Qualifier("jdbc")
     public DataSource myDataSource() {
+
         ComboPooledDataSource myDataSource = new ComboPooledDataSource();
+
         try {
             myDataSource.setDriverClass(env.getProperty("jdbc.driver"));
         } catch (PropertyVetoException exc) {
             throw new RuntimeException(exc);
         }
+
         // set database connection props
         myDataSource.setJdbcUrl(env.getProperty("jdbc.url"));
         myDataSource.setUser(env.getProperty("jdbc.user"));
@@ -50,12 +52,10 @@ public class DataSourceConfig {
     @Bean
     @Qualifier("h2")
     public DataSource h2DataSource() {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        EmbeddedDatabase db = builder
+
+        return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("realworld")
                 .build();
-
-        return db;
     }
 }

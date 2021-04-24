@@ -7,6 +7,11 @@ import org.springframework.context.annotation.*;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+//import springfox.documentation.builders.PathSelectors;
+//import springfox.documentation.builders.RequestHandlerSelectors;
+//import springfox.documentation.spi.DocumentationType;
+//import springfox.documentation.spring.web.plugins.Docket;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -16,6 +21,7 @@ import java.util.Properties;
 @ComponentScan({"io.spring"})
 @EnableTransactionManagement
 @Configuration
+@EnableWebMvc
 @Profile("Web")
 public class AppConfig {
 
@@ -32,7 +38,7 @@ public class AppConfig {
     private String packagesToScan;
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory(@Qualifier("jdbc") DataSource dataSource) {
+    public LocalSessionFactoryBean sessionFactory(@Qualifier("h2") DataSource dataSource) {
 
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
